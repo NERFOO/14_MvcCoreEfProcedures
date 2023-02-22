@@ -1,0 +1,83 @@
+﻿@model TrabajadoresModel
+
+@{
+    ViewData["Title"] = "TrabajadoresOficio";
+    List<string> oficios = ViewData["OFICIOS"] as List<string>;
+    List<Trabajador> trabajadores = null;
+
+    if(Model != null)
+    {
+        trabajadores = Model.Trabajadores;
+    } else if(ViewData["TRABAJADORES"] != null)
+    {
+        trabajadores = ViewData["TRABAJADORES"] as List<Trabajador>;
+    }
+}
+
+<h1>Trabajadores Oficio</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<form method="post">
+    <label>Seleccione un oficio</label>
+    <select name="oficio" class="form-control">
+        @foreach(string ofi in oficios)
+        {
+            <option value="@ofi">@ofi</option>
+        }
+    </select>
+
+    <button type="submit" class="btn btn-info">Buscar empleados</button>
+</form>
+
+@if(Model != null)
+{
+
+    <ul class="list-group">
+        <li class="list-group-item">Personas: @Model.Personas</li>
+        <li class="list-group-item">Suma Salarial: @Model.SumaSalarial</li>
+        <li class="list-group-item">Media Salarial: @Model.MediaSalarial</li>
+    </ul>
+}
+
+@if(trabajadores != null)
+{
+     <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id Trabajador</th>
+                    <th>Apellido</th>
+                    <th>Oficio</th>
+                    <th>Salario</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in trabajadores)
+            {
+                        <tr>
+                            <td>
+                        @Html.DisplayFor(modelItem => item.IdTrabajador)
+                            </td>
+                            <td>
+                        @Html.DisplayFor(modelItem => item.Apellido)
+                            </td>
+                            <td>
+                        @Html.DisplayFor(modelItem => item.Oficio)
+                            </td>
+                            <td>
+                        @Html.DisplayFor(modelItem => item.Salario)
+                            </td>
+                            <td>
+                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                            </td>
+                        </tr>
+            }
+            </tbody>
+        </table>
+}
+
